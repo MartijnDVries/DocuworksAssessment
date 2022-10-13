@@ -44,7 +44,6 @@ class DocumentReader:
                     count_list = [word_list[0], word_list.count(word_list[0])]
                     return count_list
                 else:
-                    print(word_list)
                     return count_list
             else:
                 word = word_list[0]
@@ -52,8 +51,7 @@ class DocumentReader:
                 word_list = [not_word for not_word in word_list if not_word != word]
                 if count > count_list[1]:
                     count_list = [word, count]
-                count_list = self.find_common_word(word_list, count_list)
-                return count_list
+                return self.find_common_word(word_list, count_list)
 
 
 
