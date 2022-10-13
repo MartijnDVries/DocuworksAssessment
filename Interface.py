@@ -14,7 +14,7 @@ def file_name(filename):
 @click.option('--option', default="read", prompt="What do you want to do?")
 def app(option):
     if option == "read":
-        fn = file_name()
+        file_name()
 
 
 if __name__ == "__main__":
