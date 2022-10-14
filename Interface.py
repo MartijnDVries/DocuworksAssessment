@@ -7,11 +7,11 @@ Docu = DocumentReader()
 
 
 @click.command()
-@click.option('--option', help="Enter an option u want to use. The possible commands are: quit, read, and search")
-@click.option('--filename', help="Enter filename without filetype")
-@click.option('--search', help="Enter the word you want to find (case-sensitive)")
+# @click.option('--option', help="Enter an option u want to use. The possible commands are: quit, read, and search")
+# @click.option('--filename', help="Enter filename without filetype")
+# @click.option('--search', help="Enter the word you want to find (case-sensitive)")
 def app():
-    start()
+    pass
 
 
 @click.command()
@@ -23,6 +23,9 @@ def start(option):
         print_file()
     elif option == "search":
         search_in_file()
+    else:
+        print("command not recognized")
+        start()
 
 @click.command()
 @click.option('--filename', prompt="In which file do you want to search? ")
@@ -35,7 +38,10 @@ def print_file(filename):
 def search_in_file(filename, search):
     click.echo(Docu.search(filename, search))
 
+def main():
+    start()
+    print("joeoe")
 
 
 if __name__ == "__main__":
-    start()
+    main()
