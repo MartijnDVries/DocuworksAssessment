@@ -1,5 +1,6 @@
 import os
 import re
+from ErrorCases import NoPalindromeError
 
 class DocumentReader:
 
@@ -13,7 +14,7 @@ class DocumentReader:
         return txt.strip()
 
     def savefile(self, file : str, file_name : str):
-        """Save text in a file with chosen filename"""
+        """Save text file with chosen filename"""
         with open(f"{self.path}{file_name}.txt", 'w') as f:
             f.write(file)
 
@@ -63,7 +64,11 @@ class DocumentReader:
         with open(f"{self.path}{file}.txt", 'r') as f:
             txt = f.read()
         word_list = txt.split()
-        return self.find_palindromes(word_list)
+        palindrome_list = self.find_palindromes(word_list)
+        if not palindrome_list:
+            raise NoPalindromeError
+        return palindrome_list
+
 
     def find_palindromes(self, word_list: list, palindromes_list: list = None) -> list:
         """Continues palindromes function"""
