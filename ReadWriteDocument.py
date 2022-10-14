@@ -1,6 +1,6 @@
 import os
 import re
-from ErrorCases import NoPalindromeError
+from ErrorCases import NoPalindromeError, NoEmailAddressesError
 
 class DocumentReader:
 
@@ -95,10 +95,10 @@ class DocumentReader:
         """list all the email addresses in a file"""
         with open(f"{self.path}{file}.txt", 'r') as f:
             txt = f.read()
-        return re.findall(r'([A-Za-z0-9_-]+\.?[A-Za-z0-9_-]+@[A-Za-z0-9]+\.?[A-Za-z]+\.?[A-Za-z]+)', txt)
-
-
-
+        mail_list = re.findall(r'([A-Za-z0-9_-]+\.?[A-Za-z0-9_-]+@[A-Za-z0-9]+\.?[A-Za-z]+\.?[A-Za-z]+)', txt)
+        if not mail_list:
+            raise NoEmailAddressesError
+        return mail_list
 
 
 if __name__ == "__main__":
