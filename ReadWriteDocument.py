@@ -103,12 +103,22 @@ class DocumentReader:
             raise NoEmailAddressesError
         return mail_list
 
+    def secret_message(self, file: str):
+        with open(f"{self.path}{file}.txt", 'r') as f:
+            txt = f.read()
+        some_list =  re.findall(r'([A-Z]?[a-z]+[A-Z][a-z]+)', txt)
+        print(some_list)
+        for word in some_list:
+            print(re.search(r'(?![A-Z])', word))
+
+
 
 if __name__ == "__main__":
     d = DocumentReader()
     # print(d.readfile('text'))
     # print(d.replace('text', 'een', ''))
-    print(d.common_word('text', limit=10))
+    # print(d.common_word('text', limit=10))
+    print(d.secret_message('text'))
     #print(d.palindromes('text'))
     # print(d.find_email_address('text'))
     # print(d.replace('text', 'publiciteit', ' '))
