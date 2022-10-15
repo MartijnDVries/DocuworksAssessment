@@ -31,32 +31,35 @@ class DocumentReader:
             txt = f.read()
         return re.sub(fr"\b{search}\b", replace, txt.strip())
 
-    def common_word(self, file: str) -> list:
+    def common_word(self, file: str, limit: int = None) -> list:
         """Find the most common word in a textfile"""
         with open(f"{self.path}{file}.txt", 'r') as f:
             txt = f.read()
         word_list = txt.split()
-        return self.find_common_word(word_list)
+        full_list = self.find_common_word(word_list)
+        limited_sorted_list = sorted(full_list, key=lambda tup: tup[1], reverse=True)
+        if limit is None:
+            limit = len(limited_sorted_list)
+        return limited_sorted_list[:limit]
 
     def find_common_word(self, word_list : list, count_list: list = None) -> list:
         """Continues common_word function"""
         if count_list is None:
-            count_list = ['', 0]
+            count_list = list()
 
         if len(word_list) == 0:
             return count_list
 
         if all(word == word_list[0] for word in word_list):
-            if word_list.count(word_list[0]) > count_list[1]:
-                return [word_list[0], word_list.count(word_list[0])]
-            else:
-                return count_list
+            word = word_list[0]
+            count = word_list.count(word)
+            count_list.append((word, count))
+            return count_list
 
         word = word_list[0]
         count = word_list.count(word)
-        word_list = [not_word for not_word in word_list if not_word != word]
-        if count > count_list[1]:
-            count_list = [word, count]
+        count_list.append((word, count))
+        word_list = [remaining_word for remaining_word in word_list if remaining_word != word]
         return self.find_common_word(word_list, count_list)
 
     def palindromes(self, file: str) -> list:
@@ -105,8 +108,8 @@ if __name__ == "__main__":
     d = DocumentReader()
     # print(d.readfile('text'))
     # print(d.replace('text', 'een', ''))
-    # print(d.common_word('text'))
+    print(d.common_word('text', limit=10))
     #print(d.palindromes('text'))
-    print(d.find_email_address('text'))
+    # print(d.find_email_address('text'))
     # print(d.replace('text', 'publiciteit', ' '))
 
