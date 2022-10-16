@@ -38,7 +38,7 @@ def start(option):
 )
 def print_file(filename):
     """Open a textfile and show in commandline"""
-    click.echo((Docu.readfile(filename)))
+    click.echo((Docu.readfile(filename))+"\n")
     start()
 
 @click.command()
@@ -54,7 +54,7 @@ def print_file(filename):
 )
 def search_in_file(filename, search):
     """Search for a word in a textfile"""
-    click.echo(Docu.search(filename, search))
+    click.echo(Docu.search(filename, search)+"\n")
     start()
 
 
@@ -77,7 +77,7 @@ def search_in_file(filename, search):
 def replace_in_file(filename, searchword, replaceword):
     """Replace one word with another (word or string) in a textfile"""
     replaced_text = Docu.replace(filename, searchword, replaceword)
-    click.echo(replaced_text)
+    click.echo(replaced_text+"\n")
     if replaced_text != f"'{searchword}' not found in '{filename}.txt', nothing to replace":
         choice_made = False
         while not choice_made:
@@ -85,7 +85,7 @@ def replace_in_file(filename, searchword, replaceword):
             if yes_no == 'y':
                 newfilename = input("Enter a filename: ")
                 Docu.savefile(replaced_text, newfilename)
-                click.echo("File saved!")
+                click.echo("File saved!\n")
                 choice_made = True
             elif yes_no == 'n':
                 choice_made = True
@@ -100,7 +100,7 @@ def replace_in_file(filename, searchword, replaceword):
 )
 def find_email_in_file(filename):
     """Show a list of all email addresses in the file"""
-    click.echo(Docu.find_email_address(filename))
+    click.echo(Docu.find_email_address(filename)+"\n")
     start()
 
 
@@ -118,7 +118,7 @@ def find_email_in_file(filename):
 )
 def find_common_in_file(filename, listlimit):
     """Show a list of the most common words in a file with their counts, This list can be limited"""
-    click.echo(Docu.common_word(filename, listlimit))
+    click.echo(Docu.common_word(filename, listlimit)+"\n")
     start()
 
 
