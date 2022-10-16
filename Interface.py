@@ -6,16 +6,12 @@ from ReadWriteDocument import DocumentReader
 Docu = DocumentReader()
 
 
-# @click.option('--option', help="Enter an option u want to use. The possible commands are: quit, read, and search")
-# @click.option('--filename', help="Enter filename without filetype")
-# @click.option('--search', help="Enter the word you want to find (case-sensitive)")
-
-
 @click.command()
 @click.option(
     '--option',
     prompt="What do you want to do (option)?",
-    help="Possible commands are: quit, read, search, replace, email, common, secret")
+    help="Possible commands are: quit, read, search, replace, email, common"
+)
 def start(option):
     option = option.lower()
     if option == "quit":
@@ -82,17 +78,19 @@ def replace_in_file(filename, searchword, replaceword):
     """Replace one word with another (word or string) in a textfile"""
     replaced_text = Docu.replace(filename, searchword, replaceword)
     click.echo(replaced_text)
-    choice_made = False
-    while not choice_made:
-        yes_no = input("Do you want to save this file?(y/n) ").lower()
-        if yes_no == 'y':
-            newfilename = input("Enter a filename: ")
-            Docu.savefile(replaced_text, newfilename)
-            click.echo("File saved!")
-            start()
-        elif yes_no == 'n':
-            start()
-        else: continue
+    if replaced_text != f"'{searchword}' not found in '{filename}.txt', nothing to replace":
+        choice_made = False
+        while not choice_made:
+            yes_no = input("Do you want to save this file?(y/n) ").lower()
+            if yes_no == 'y':
+                newfilename = input("Enter a filename: ")
+                Docu.savefile(replaced_text, newfilename)
+                click.echo("File saved!")
+                choice_made = True
+            elif yes_no == 'n':
+                choice_made = True
+    start()
+
 
 @click.command()
 @click.option(
