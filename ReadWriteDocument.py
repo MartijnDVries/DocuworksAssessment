@@ -23,7 +23,6 @@ class DocumentReader:
 
     def search(self, file: str, search : str) -> str:
         """Search for a word in the text and return the index/indices in a list"""
-
         txt = self.readfile(file)
         if txt == "File not Found":
             return txt
@@ -31,6 +30,7 @@ class DocumentReader:
         search_list = [word.span() for word in re.finditer(search, txt.strip())]
         if search_list:
             return f"Found '{search}' on the following positions: \n{str(search_list)}"
+
         return f"'{search}' not found in {file}.txt"
 
     def replace(self, file: str, search: str, replace: str) -> str:
@@ -42,11 +42,11 @@ class DocumentReader:
 
         if not [word for word in re.finditer(search, txt.strip())]:
             return f"'{search}' not found in '{file}.txt', nothing to replace"
+
         return re.sub(fr"\b{search}\b", replace, txt.strip())
 
     def common_word(self, file: str, limit: int = None) -> str:
         """Find the most common word in a textfile"""
-
         txt = self.readfile(file)
         if txt == "File not Found":
             return txt
@@ -101,16 +101,16 @@ class DocumentReader:
 
         potential_palindrome = word_list[0]
         if len(potential_palindrome) == 1:
-            word_list = [not_word for not_word in word_list if not_word != potential_palindrome]
+            word_list = [remaining_word for remaining_word in word_list if remaining_word != potential_palindrome]
             return self.find_palindromes(word_list, palindromes_list)
 
         for i in range(len(potential_palindrome)):
             if potential_palindrome[i] != potential_palindrome[-i-1]:
-                word_list = [not_word for not_word in word_list if not_word != potential_palindrome]
+                word_list = [remaining_word for remaining_word in word_list if remaining_word != potential_palindrome]
                 return self.find_palindromes(word_list, palindromes_list)
 
         palindromes_list.append(potential_palindrome)
-        word_list = [not_word for not_word in word_list if not_word != potential_palindrome]
+        word_list = [remaining_word for remaining_word in word_list if remaining_word != potential_palindrome]
         return self.find_palindromes(word_list, palindromes_list)
 
     def find_email_address(self, file: str) -> str:
