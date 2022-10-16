@@ -9,26 +9,37 @@ class DocumentReader:
 
     def readfile(self, file : str) -> str:
         """Open the file and return the text of this file"""
-        with open(f"{self.path}{file}.txt", 'r') as f:
-            txt = f.read()
-        return txt.strip()
+        try:
+            with open(f"{self.path}{file}.txt", 'r') as f:
+                txt = f.read()
+            return txt.strip()
+        except FileNotFoundError:
+            return "file not found"
 
     def savefile(self, file : str, file_name : str):
         """Save text file with chosen filename"""
         with open(f"{self.path}{file_name}.txt", 'w') as f:
             f.write(file)
 
-    def search(self, file: str, search : str) -> list:
+    def search(self, file: str, search : str) -> str:
         """Search for a word in the text and return the index/indices in a list"""
-        with open(f"{self.path}{file}.txt", 'r') as f:
-            txt = f.read()
-        return [word.span() for word in re.finditer(search, txt.strip())]
+        try:
+            with open(f"{self.path}{file}.txt", 'r') as f:
+                txt = f.read()
+        except FileNotFoundError:
+            return "File not found"
+        search_list = [word.span() for word in re.finditer(search, txt.strip())]
+        if search_list:
+            return f"Found {search} on the following positions: \n{str(search_list)}"
+        return f"Word: {search} not found in file"
 
     def replace(self, file: str, search: str, replace: str) -> str:
         """replace all occurrences of a word in a textfile with another word"""
-        print(search)
-        with open(f"{self.path}{file}.txt", 'r') as f:
-            txt = f.read()
+        try:
+            with open(f"{self.path}{file}.txt", 'r') as f:
+                txt = f.read()
+        except FileNotFoundError:
+            return "File not found"
         return re.sub(fr"\b{search}\b", replace, txt.strip())
 
     def common_word(self, file: str, limit: int = None) -> list:
@@ -104,6 +115,7 @@ class DocumentReader:
         return mail_list
 
     def secret_message(self, file: str):
+        """Find a very secret message in the text"""
         with open(f"{self.path}{file}.txt", 'r') as f:
             txt = f.read()
         some_list =  re.findall(r'([A-Z]?[a-z]+[A-Z][a-z]+)', txt)
